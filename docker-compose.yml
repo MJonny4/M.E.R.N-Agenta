@@ -1,0 +1,15 @@
+services:
+    mongo:
+        image: mongo:latest
+        container_name: mongo-container
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=ion
+            - MONGO_INITDB_ROOT_PASSWORD=6225
+            - MONGO_INITDB_DATABASE=agenta
+        ports:
+            - '27017:27017'
+        volumes:
+            - mongo-data:/data/db
+
+volumes:
+    mongo-data:

@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "strict": false,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "noImplicitAny": false,
+        "strictFunctionTypes": false,
+        "target": "ES2022",
+        "moduleResolution": "NodeNext",
+        "module": "NodeNext",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+    }
+}
