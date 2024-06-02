@@ -7,7 +7,6 @@ import Logging from './utils/logger'
 import authRouter from './routes/auth.routes'
 
 import banksRouter from './routes/bank.routes'
-import movementsRouter from './routes/movement.routes'
 
 mongoose
     .connect(String(process.env.MONGO_URL), {
@@ -68,7 +67,6 @@ const startServer = async () => {
     })
 
     app.use('/api/v1/banks', banksRouter)
-    app.use('/api/v1/movements', movementsRouter)
 
     // app.use('/api/v1/shops', shopsRouter)
     // app.use('/api/v1/markets', marketRouter)

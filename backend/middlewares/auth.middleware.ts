@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { verify } from 'jsonwebtoken'
+import { sign, verify } from 'jsonwebtoken'
 
 interface UserDataPayload {
     _id: string
@@ -39,7 +39,7 @@ export const authMiddleware = async (
 
         next()
     } catch (error) {
-        return res.status(401).json({ message: 'Not authorized, token failed' })
+        return res.clearCookie('token').status(401).json({ message: '401, Invalid Token' })
     }
 }
 
