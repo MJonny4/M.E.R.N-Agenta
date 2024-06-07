@@ -10,5 +10,6 @@
         "module": "NodeNext",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
+        "noUncheckedIndexedAccess": false,
     }
 }

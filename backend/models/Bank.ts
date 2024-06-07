@@ -1,4 +1,4 @@
-import { Document, Schema, Types, model } from 'mongoose'
+import { Document, Model, Schema, Types, model } from 'mongoose'
 
 export type MovementType = 'rent' | 'salary' | 'food' | 'clothes' | 'other'
 
@@ -51,6 +51,10 @@ interface IBank extends Document {
     movements: Types.DocumentArray<IMovement>
 }
 
+interface IBankModel extends Model<IBank> {
+    filterMovements(filters: any, bankId: Types.ObjectId, userId: Types.ObjectId): Promise<IMovement[]>
+}
+
 const bankSchema = new Schema<IBank>(
     {
         user: {
@@ -75,6 +79,35 @@ const bankSchema = new Schema<IBank>(
     },
 )
 
-const Bank = model<IBank>('Bank', bankSchema)
+bankSchema.statics.filterMovements = async function (
+    filters: any,
+    bankId: Types.ObjectId,
+    userId: Types.ObjectId,
+): Promise<IMovement[]> {
+    const bank = await this.findOne({ _id: bankId, user: userId }).populate('movements')
+
+    if (!bank) {
+        throw new Error('Bank not found')
+    }
+
+    return bank.movements.filter((movement: IMovement) => {
+        for (const key in filters) {
+            const filterValue = filters[key]
+            const movementValue = movement[key]
+
+            if (key === 'date' || key === 'money' || key === 'quantity') {
+                if (filterValue.$gte && movementValue < filterValue.$gte) return false
+                if (filterValue.$lte && movementValue > filterValue.$lte) return false
+            } else if (key === 'description') {
+                if (!filterValue.$regex.test(movementValue || '')) return false
+            } else {
+                if (movementValue !== filterValue) return false
+            }
+        }
+        return true
+    })
+}
+
+const Bank = model<IBank, IBankModel>('Bank', bankSchema)
 
 export default Bank

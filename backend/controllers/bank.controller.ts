@@ -1,5 +1,8 @@
+import ExcelJS from 'exceljs'
 import { Request, Response } from 'express'
+import { Types } from 'mongoose'
 import Bank from '../models/Bank'
+import { MovementType } from './../models/Bank'
 
 export const getUserBanks = async (req: Request, res: Response) => {
     try {
@@ -78,14 +81,29 @@ export const deleteBank = async (req: Request, res: Response) => {
 // *** MOVEMENTS ***/
 
 export const getBankMovements = async (req: Request, res: Response) => {
+    const { description, startDate, endDate, operation, minMoney, maxMoney, minQuantity, maxQuantity, type } = req.query
+
     try {
-        const bank = await Bank.findOne({ _id: req.params.bankId, user: req.user?._id }).populate('movements')
+        const bankId = new Types.ObjectId(req.params.bankId)
+        const userId = new Types.ObjectId(req.user?._id)
+        const filters: any = {}
 
-        if (!bank) {
-            return res.status(404).json({ message: 'Bank not found' })
+        if (description) filters.description = { $regex: new RegExp(description as string, 'i') }
+        if (startDate || endDate) {
+            filters.date = {}
+            if (startDate) filters.date.$gte = new Date(startDate as string)
+            if (endDate) filters.date.$lte = new Date(endDate as string)
         }
+        if (operation !== undefined) filters.operation = operation === 'true'
+        if (minMoney) filters.money = { ...filters.money, $gte: Number(minMoney) }
+        if (maxMoney) filters.money = { ...filters.money, $lte: Number(maxMoney) }
+        if (minQuantity) filters.quantity = { ...filters.quantity, $gte: Number(minQuantity) }
+        if (maxQuantity) filters.quantity = { ...filters.quantity, $lte: Number(maxQuantity) }
+        if (type) filters.type = type as MovementType
 
-        res.status(200).json({ message: 'Movements retrieved successfully', movements: bank.movements })
+        const movements = await Bank.filterMovements(filters, bankId, userId)
+
+        res.status(200).json({ message: 'Movements retrieved successfully', movements })
     } catch (error) {
         res.status(500).json({ message: 'Failed to get movements', error: error.message })
     }
@@ -193,5 +211,67 @@ export const deleteBankMovement = async (req: Request, res: Response) => {
         res.status(200).json({ message: 'Movement deleted successfully' })
     } catch (error) {
         res.status(500).json({ message: 'Failed to delete movement', error: error.message })
+    }
+}
+
+export const exportBankMovementsToExcel = async (req: Request, res: Response) => {
+    const { description, startDate, endDate, operation, minMoney, maxMoney, minQuantity, maxQuantity, type } = req.query
+
+    try {
+        // Validate and convert bankId and userId to ObjectId
+        const bankId = new Types.ObjectId(req.params.bankId)
+        const userId = new Types.ObjectId(req.user?._id)
+
+        const filters: any = {}
+
+        if (description) filters.description = { $regex: new RegExp(description as string, 'i') }
+        if (startDate || endDate) {
+            filters.date = {}
+            if (startDate) filters.date.$gte = new Date(startDate as string)
+            if (endDate) filters.date.$lte = new Date(endDate as string)
+        }
+        if (operation !== undefined) filters.operation = operation === 'true'
+        if (minMoney) filters.money = { ...filters.money, $gte: Number(minMoney) }
+        if (maxMoney) filters.money = { ...filters.money, $lte: Number(maxMoney) }
+        if (minQuantity) filters.quantity = { ...filters.quantity, $gte: Number(minQuantity) }
+        if (maxQuantity) filters.quantity = { ...filters.quantity, $lte: Number(maxQuantity) }
+        if (type) filters.type = type as MovementType
+
+        const movements = await Bank.filterMovements(filters, bankId, userId)
+
+        // Create a new workbook and add a worksheet
+        const workbook = new ExcelJS.Workbook()
+        const worksheet = workbook.addWorksheet('Movements')
+
+        // Define columns
+        worksheet.columns = [
+            { header: 'Description', key: 'description', width: 30 },
+            { header: 'Date', key: 'date', width: 15 },
+            { header: 'Operation', key: 'operation', width: 10 },
+            { header: 'Money', key: 'money', width: 15 },
+            { header: 'Quantity', key: 'quantity', width: 10 },
+            { header: 'Type', key: 'type', width: 15 },
+        ]
+
+        // Add rows
+        movements.forEach((movement) => {
+            worksheet.addRow({
+                description: movement.description,
+                date: movement.date,
+                operation: movement.operation ? 'Credit' : 'Debit',
+                money: movement.money,
+                quantity: movement.quantity,
+                type: movement.type,
+            })
+        })
+
+        // Set the response headers and send the buffer as a downloadable file
+        res.setHeader('Content-Disposition', 'attachment; filename="movements.xlsx"')
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
+        await workbook.xlsx.write(res)
+        res.end()
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to export movements to Excel', error: error.message })
     }
 }

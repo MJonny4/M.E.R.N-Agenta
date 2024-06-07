@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { sign, verify } from 'jsonwebtoken'
+import { verify } from 'jsonwebtoken'
 
 interface UserDataPayload {
     _id: string
