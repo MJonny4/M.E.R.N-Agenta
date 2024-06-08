@@ -49,6 +49,7 @@ export const loginUser = async (req: Request, res: Response) => {
         }
 
         const token = generateToken(user._id as string, user.username, user.email)
+        const { password: _, ...userWithoutPassword } = user.toObject()
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
@@ -58,6 +59,7 @@ export const loginUser = async (req: Request, res: Response) => {
             .status(200)
             .json({
                 message: 'Logged in successfully',
+                user: userWithoutPassword,
                 token,
             })
     } catch (error) {
