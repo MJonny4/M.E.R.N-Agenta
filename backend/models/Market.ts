@@ -11,7 +11,7 @@ interface IShop extends Document {
 interface IMarket extends Document {
     name: string
     user: Types.ObjectId
-    shops: IShop[]
+    shops: Types.DocumentArray<IShop>
 }
 
 const shopSchema = new Schema<IShop>(
@@ -32,10 +32,6 @@ const shopSchema = new Schema<IShop>(
         date: {
             type: Date,
             required: true,
-        },
-        user: {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
         },
     },
     {
@@ -58,7 +54,7 @@ const marketSchema = new Schema<IMarket>(
     },
     {
         timestamps: true,
-        versionKey: true,
+        versionKey: 'version',
     },
 )
 

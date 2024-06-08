@@ -3,6 +3,8 @@ import { verify } from 'jsonwebtoken'
 
 interface UserDataPayload {
     _id: string
+    username: string
+    email: string
 }
 
 declare global {
