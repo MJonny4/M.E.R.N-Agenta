@@ -1,35 +1,20 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    ManyToOne,
-    CreateDateColumn,
-    UpdateDateColumn,
-} from 'typeorm'
-import Streak from './Streak'
+import mongoose, { Document, Schema } from 'mongoose'
 
-@Entity({ name: 'streaks_helper' })
-class StreakHelper {
-    @PrimaryGeneratedColumn('uuid')
-    id: string
-
-    @Column({ type: 'uuid', nullable: false })
-    streakId: string
-
-    @Column({ type: 'date', nullable: false })
-    date_checked: Date
-
-    @Column({ type: 'boolean', nullable: false })
-    check: boolean
-
-    @CreateDateColumn()
-    createdAt: Date
-
-    @UpdateDateColumn()
-    updatedAt: Date
-
-    @ManyToOne(() => Streak, (streak) => streak.streakHelpers)
-    streak: Streak
+export interface IStreakHelper extends Document {
+    streak: mongoose.Types.ObjectId
+    dateChecked: Date
+    checked: boolean
 }
 
-export default StreakHelper
+const StreakHelperSchema = new Schema<IStreakHelper>(
+    {
+        streak: { type: Schema.Types.ObjectId, ref: 'Streak', required: true },
+        dateChecked: { type: Date, required: true },
+        checked: { type: Boolean, default: false },
+    },
+    { timestamps: true },
+)
+
+StreakHelperSchema.index({ streak: 1, dateChecked: 1 }, { unique: true })
+
+export default mongoose.model<IStreakHelper>('StreakHelper', StreakHelperSchema)

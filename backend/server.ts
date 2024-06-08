@@ -8,6 +8,7 @@ import authRouter from './routes/auth.routes'
 import banksRouter from './routes/bank.routes'
 import marketRouter from './routes/market.routes'
 import recipesRouter from './routes/recipe.routes'
+import streaksRouter from './routes/streak.routes'
 
 mongoose
     .connect(String(process.env.MONGO_URL), {
@@ -67,16 +68,11 @@ const startServer = async () => {
         res.send('Server is Working! 🚀')
     })
 
-    app.use('/api/v1/banks', banksRouter)
-
-    app.use('/api/v1/markets', marketRouter)
-
-    app.use('/api/v1/recipes', recipesRouter)
-
-    // app.use('/api/v1/streaks', streaksRouter)
-
     app.use('/api/v1/auth', authRouter)
-    // app.use('/api/v1', protectedRouter)
+    app.use('/api/v1/banks', banksRouter)
+    app.use('/api/v1/markets', marketRouter)
+    app.use('/api/v1/recipes', recipesRouter)
+    app.use('/api/v1/streaks', streaksRouter)
 
     // Error handling
     app.use((req: Request, res: Response, next: NextFunction) => {

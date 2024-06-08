@@ -1,37 +1,20 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    ManyToOne,
-    CreateDateColumn,
-    UpdateDateColumn,
-    OneToMany,
-} from 'typeorm'
-import User from './User'
-import StreakHelper from './StreaksHelper'
+import mongoose, { Document, Schema } from 'mongoose'
 
-@Entity({ name: 'streaks' })
-class Streak {
-    @PrimaryGeneratedColumn('uuid')
-    id: string
-
-    @Column({ type: 'varchar', length: 255, nullable: false })
+export interface IStreak extends Document {
     name: string
-
-    @Column({ type: 'int', nullable: false, default: 0 })
-    number: number
-
-    @CreateDateColumn()
-    createdAt: Date
-
-    @UpdateDateColumn()
-    updatedAt: Date
-
-    @ManyToOne(() => User, (user) => user.streaks)
-    user: User
-
-    @OneToMany(() => StreakHelper, (streakHelper) => streakHelper.streak)
-    streakHelpers: StreakHelper[]
+    count: number
+    user: mongoose.Types.ObjectId
+    lastCheckedDate: Date
 }
 
-export default Streak
+const StreakSchema = new Schema<IStreak>(
+    {
+        name: { type: String, required: true },
+        count: { type: Number, default: 0 },
+        user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+        lastCheckedDate: { type: Date, default: null },
+    },
+    { timestamps: true },
+)
+
+export default mongoose.model<IStreak>('Streak', StreakSchema)

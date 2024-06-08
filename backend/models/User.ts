@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt'
+import { hash, compare } from 'bcrypt'
 import { Document, Schema, model } from 'mongoose'
 
 interface IUser extends Document {
@@ -16,12 +16,12 @@ const userSchema = new Schema<IUser>({
 
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next()
-    this.password = await bcrypt.hash(this.password, 8)
+    this.password = await hash(this.password, 8)
     next()
 })
 
 userSchema.methods.comparePassword = async function (candidatePassword: string) {
-    return bcrypt.compare(candidatePassword, this.password)
+    return compare(candidatePassword, this.password)
 }
 
 const User = model<IUser>('User', userSchema)
