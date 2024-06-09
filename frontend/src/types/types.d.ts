@@ -10,3 +10,13 @@ export type Error = {
     path: string
     location: string
 }
+
+export type LoginResponse = {
+    message: string
+    user?: {
+        _id: string
+        username: string
+        email: string
+    }
+    token?: string
+}

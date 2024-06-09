@@ -41,7 +41,7 @@ export const authMiddleware = async (
 
         next()
     } catch (error) {
-        return res.clearCookie('token').status(401).json({ message: '401, Invalid Token' })
+        return res.clearCookie('token').status(401).json({ message: '401, Token expired' })
     }
 }
 

@@ -1,23 +1,35 @@
-import { Link } from 'react-router-dom'
+import React from 'react'
+import { FaUniversity, FaStore, FaUtensils, FaTrophy } from 'react-icons/fa'
+import Card from '../components/Card'
 
-export default function Dashboard() {
+const Dashboard: React.FC = () => {
     return (
-        <main>
-            <div className='flex flex-col gap-6 p-28 px-3 max-w-6xl mx-auto'>
-                <h1 className='text-slate-700 font-bold text-3xl lg:text-6xl'>
-                    Find your next <span className='text-slate-500'>perfect</span>
-                    <br /> place with ease
-                </h1>
-                <div className='text-gray-400 text-xs sm:text-base lg:text-lg'>
-                    Munti Estates is the best place your next perfect place to live.
-                </div>
-                <Link
-                    to={'/search'}
-                    className='text-xs sm:text-base text-blue-800 font-bold hover:underline lg:text-lg'
-                >
-                    Let&apos;s Start now
-                </Link>
+        <div className='bg-light-coffee-cream min-h-screen p-8'>
+            <h1 className='text-4xl font-bold mb-8 text-rich-chocolate'>Dashboard</h1>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
+                <Card
+                    title='Banks & Movements'
+                    description='Track your financial transactions and manage your bank accounts.'
+                    icon={<FaUniversity />}
+                />
+                <Card
+                    title='Markets & Shops'
+                    description='Discover local markets and shops for your daily needs.'
+                    icon={<FaStore />}
+                />
+                <Card
+                    title='Recipes'
+                    description='Explore delicious recipes with step-by-step guides and ingredient lists.'
+                    icon={<FaUtensils />}
+                />
+                <Card
+                    title='Streaks'
+                    description='Stay motivated and track your progress with daily streaks.'
+                    icon={<FaTrophy />}
+                />
             </div>
-        </main>
+        </div>
     )
 }
+
+export default Dashboard

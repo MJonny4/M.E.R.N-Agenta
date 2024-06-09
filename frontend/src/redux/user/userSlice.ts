@@ -7,7 +7,7 @@ interface UserState {
         username: string
         email: string
     } | null
-    error: Array<Error> | string | null
+    error: null | string | Array<Error>
     loading: boolean
 }
 
@@ -22,76 +22,68 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         // Login user
-        signInStart: (state) => {
+        loginStart: (state) => {
             state.loading = true
+            state.error = null
         },
-        signInSuccess: (state, action) => {
+        loginSuccess: (state, action) => {
             state.currentUser = action.payload // is the data from the backend
-            state.loading = false
             state.error = null
+            state.loading = false
         },
-        signInFailure: (state, action) => {
+        loginFailure: (state, action) => {
             state.error = action.payload
             state.loading = false
         },
 
-        // Update user
-        updateUserStart: (state) => {
+        // Register user
+        registerStart: (state) => {
             state.loading = true
-        },
-        updateUserSuccess: (state, action) => {
-            state.currentUser = action.payload
-            state.loading = false
             state.error = null
         },
-        updateUserFailure: (state, action) => {
-            state.error = action.payload
-            state.loading = false
-        },
-
-        // Delete user
-        deleteUserStart: (state) => {
-            state.loading = true
-        },
-        deleteUserSuccess: (state) => {
-            state.currentUser = null
-            state.loading = false
+        registerSuccess: (state) => {
+            // state.currentUser = action.payload // register != login automatically
             state.error = null
+            state.loading = false
         },
-        deleteUserFailure: (state, action) => {
+        registerFailure: (state, action) => {
             state.error = action.payload
             state.loading = false
         },
 
         // Logout user
-        LogutUserStart: (state) => {
+        logoutStart: (state) => {
             state.loading = true
-        },
-        LogutUserSuccess: (state) => {
-            state.currentUser = null
-            state.loading = false
             state.error = null
         },
-        LogutUserFailure: (state, action) => {
+        logoutSuccess: (state) => {
+            state.currentUser = null
+            state.error = null
+            state.loading = false
+        },
+        logoutFailure: (state, action) => {
             state.error = action.payload
             state.loading = false
+        },
+
+        // Clear error
+        clearError: (state) => {
+            state.error = null
         },
     },
 })
 
 export const {
-    signInStart,
-    signInSuccess,
-    signInFailure,
-    updateUserStart,
-    updateUserSuccess,
-    updateUserFailure,
-    deleteUserStart,
-    deleteUserSuccess,
-    deleteUserFailure,
-    LogutUserStart,
-    LogutUserSuccess,
-    LogutUserFailure,
+    loginStart,
+    loginSuccess,
+    loginFailure,
+    registerStart,
+    registerSuccess,
+    registerFailure,
+    logoutStart,
+    logoutSuccess,
+    logoutFailure,
+    clearError,
 } = userSlice.actions
 
 export default userSlice.reducer
