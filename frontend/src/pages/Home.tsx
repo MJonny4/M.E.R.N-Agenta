@@ -2,10 +2,12 @@ import { motion } from 'framer-motion'
 import { FC } from 'react'
 import { FaCalendarAlt, FaClipboardList, FaCoffee } from 'react-icons/fa'
 import Card from '../components/Card'
+import Header from '../components/Header'
 
 const Home: FC = () => {
     return (
         <>
+            <Header />
             <motion.main
                 className='bg-light-coffee-cream min-h-screen pt-20 pb-16 px-4'
                 initial={{ opacity: 0 }}

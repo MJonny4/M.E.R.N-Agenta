@@ -4,7 +4,7 @@ import Card from '../components/Card'
 
 const Dashboard: React.FC = () => {
     return (
-        <div className='bg-light-coffee-cream min-h-screen p-8'>
+        <>
             <h1 className='text-4xl font-bold mb-8 text-rich-chocolate'>Dashboard</h1>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
                 <Card
@@ -28,7 +28,7 @@ const Dashboard: React.FC = () => {
                     icon={<FaTrophy />}
                 />
             </div>
-        </div>
+        </>
     )
 }
 

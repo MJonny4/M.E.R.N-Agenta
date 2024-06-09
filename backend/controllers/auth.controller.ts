@@ -11,7 +11,7 @@ import User from '../models/User'
  */
 export const generateToken = (_id: string, username: string, email: string) => {
     return sign({ _id, username, email }, process.env.JWT_SECRET, {
-        expiresIn: '30m',
+        expiresIn: '6h',
     })
 }
 
@@ -54,7 +54,7 @@ export const loginUser = async (req: Request, res: Response) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict', // Use 'none' if needed for cross-site requests
-            maxAge: 1800000, // 30 minutes
+            maxAge: 6 * 60 * 60 * 1000, // 6 hours
         })
             .status(200)
             .json({

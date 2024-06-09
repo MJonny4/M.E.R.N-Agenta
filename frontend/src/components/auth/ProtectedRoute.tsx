@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
+import { Navigate, Outlet } from 'react-router-dom'
 import { RootState } from '../../redux/store'
-import { Outlet, Navigate } from 'react-router-dom'
 import Sidebar from '../Sidebar'
 
 export default function ProtectedRoute() {
@@ -13,7 +13,7 @@ export default function ProtectedRoute() {
     return (
         <main className='flex min-h-screen'>
             <Sidebar />
-            <section className='flex-grow'>
+            <section className='flex-1 bg-light-coffee-cream p-5'>
                 <Outlet />
             </section>
         </main>

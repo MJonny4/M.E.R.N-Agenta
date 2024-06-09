@@ -1,9 +1,8 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
 import { motion } from 'framer-motion'
-import { FaUser, FaEnvelope, FaCoffee } from 'react-icons/fa'
+import React from 'react'
+import { FaCoffee, FaEnvelope, FaUser } from 'react-icons/fa'
+import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
-import Logout from './Logout'
 
 const Profile: React.FC = () => {
     const { currentUser } = useSelector((state: RootState) => state.user)
@@ -14,13 +13,14 @@ const Profile: React.FC = () => {
 
     return (
         <motion.div
-            className='min-h-screen bg-light-coffee-cream p-4 md:p-12 flex flex-col justify-center'
+            className='min-h-screen bg-light-coffee-cream p-4 md:p-12 flex flex-col'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
         >
+            <h1 className='text-3xl font-bold text-dark-espresso mb-8'>Profile</h1>
             <motion.div
-                className='bg-medium-coffee-latte p-8 rounded-xl shadow-2xl max-w-md w-full flex flex-col items-center h-1/2'
+                className='bg-medium-coffee-latte p-8 rounded-xl shadow-2xl max-w-md mx-auto w-full flex flex-col items-center h-1/2'
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 100, delay: 0.2 }}
@@ -52,9 +52,6 @@ const Profile: React.FC = () => {
                         <span className='text-2xl font-bold'>3</span>
                     </div>
                 </motion.div>
-                <div className='mt-8 w-full'>
-                    <Logout />
-                </div>
             </motion.div>
         </motion.div>
     )
