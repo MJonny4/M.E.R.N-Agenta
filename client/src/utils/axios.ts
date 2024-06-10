@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:3000/api/v1',
+    baseURL: 'http://localhost:10001/api/v1',
     withCredentials: true,
     // res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
     headers: {

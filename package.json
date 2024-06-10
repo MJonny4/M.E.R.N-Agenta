@@ -5,7 +5,8 @@
     "main": "server.ts",
     "scripts": {
         "build": "pnpm i && cd client && pnpm i && pnpm run build",
-        "start": "ts-node -r dotenv/config server.ts"
+        "start": "ts-node -r dotenv/config server.ts",
+        "dev": "nodemon -r dotenv/config --exec ts-node server.ts"
     },
     "keywords": [
         "agenta",
