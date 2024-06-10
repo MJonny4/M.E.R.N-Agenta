@@ -96,3 +96,22 @@ export type TRecipe = {
     createdAt: string
     updatedAt: string
 }
+
+export type TStreak = {
+    _id: string
+    name: string
+    count: number
+    user: string
+    lastCheckedDate: string | null
+    createdAt: string
+    updatedAt: string
+}
+
+export type TStreakHelper = {
+    _id: string
+    streak: string
+    dateChecked: string
+    checked: boolean
+    createdAt: string
+    updatedAt: string
+}

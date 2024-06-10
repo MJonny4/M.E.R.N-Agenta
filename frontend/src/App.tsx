@@ -1,6 +1,8 @@
 import { lazy, Suspense } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Banks from './pages/Banks'
+import Recipe from './pages/Recipe'
+import RecipeDetails from './components/recipes/RecipeDetails'
 
 const Logout = lazy(() => import('./components/auth/Logout'))
 const Profile = lazy(() => import('./components/auth/Profile'))
@@ -11,6 +13,7 @@ const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
 const Market = lazy(() => import('./pages/Market'))
+const Streak = lazy(() => import('./pages/Streak'))
 
 const Loading = () => (
     <div className='flex justify-center items-center min-h-screen bg-light-coffee-cream'>
@@ -34,6 +37,9 @@ export default function App() {
                         <Route path='/logout' element={<Logout />} />
                         <Route path='/banks' element={<Banks />} />
                         <Route path='/markets' element={<Market />} />
+                        <Route path='/recipes' element={<Recipe />} />
+                        <Route path='/recipes/:id' element={<RecipeDetails />} />
+                        <Route path='/streaks' element={<Streak />} />
                     </Route>
                 </Routes>
             </Suspense>
