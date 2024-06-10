@@ -10,6 +10,7 @@ const Dashboard = lazy(() => import('./pages/Dashboard'))
 const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
+const Market = lazy(() => import('./pages/Market'))
 
 const Loading = () => (
     <div className='flex justify-center items-center min-h-screen bg-light-coffee-cream'>
@@ -32,6 +33,7 @@ export default function App() {
                         <Route path='/profile' element={<Profile />} />
                         <Route path='/logout' element={<Logout />} />
                         <Route path='/banks' element={<Banks />} />
+                        <Route path='/markets' element={<Market />} />
                     </Route>
                 </Routes>
             </Suspense>

@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { Error } from '../../types/types'
+import { TError } from '../../types/types'
 
-interface UserState {
+export interface UserState {
     currentUser: {
         _id: string
         username: string
         email: string
     } | null
-    error: null | string | Array<Error>
+    error: null | string | Array<TError>
     loading: boolean
 }
 

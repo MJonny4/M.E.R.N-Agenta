@@ -11,7 +11,7 @@ export default function ProtectedRoute() {
     }
 
     return (
-        <main className='flex min-h-screen'>
+        <main className='flex min-h-screen overflow-hidden'>
             <Sidebar />
             <section className='flex-1 bg-light-coffee-cream p-5'>
                 <Outlet />

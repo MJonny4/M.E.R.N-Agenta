@@ -26,7 +26,7 @@ const shopSchema = new Schema<IShop>(
             required: true,
         },
         price: {
-            type: Schema.Types.Decimal128,
+            type: Schema.Types.Number,
             default: null,
         },
         date: {

@@ -7,7 +7,7 @@ import { loginStart, loginSuccess, loginFailure, clearError } from '../redux/use
 import { RootState } from '../redux/store'
 import { ErrorResponse, SuccessResponse } from '../types/types'
 import Header from '../components/Header'
-import axiosInstance from '../types/axios'
+import axiosInstance from '../utils/axios'
 import axios from 'axios'
 
 export default function Login() {

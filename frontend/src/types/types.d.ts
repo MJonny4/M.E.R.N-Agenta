@@ -1,29 +1,41 @@
-export type User = {
+export type TUser = {
     _id: string
     username: string
     email: string
 }
 
-export type Error = {
+// *** AXIOS ERROR RESPONSE ***
+export type TError = {
     type: string
     msg: string
     path: string
     location: string
 }
 
-export type ErrorResponse = {
+export type TErrorResponse = {
     message: string | Error[]
 }
 
-export type SuccessResponse = {
+export type TSuccessResponse = {
     message: string
     user: User
     token: string
 }
+// *** END OF AXIOS ERROR RESPONSE ***
 
-export type MovementType = 'rent' | 'salary' | 'food' | 'clothes' | 'other'
+// *** BANKS ***
 
-export interface Movement {
+export type TBank = {
+    _id: string
+    user: string
+    name: string
+    balance: number
+    movements: Movement[]
+}
+
+export type TMovementType = 'rent' | 'salary' | 'food' | 'clothes' | 'other'
+
+export type TMovement = {
     _id: string
     description: string
     date: Date
@@ -33,10 +45,54 @@ export interface Movement {
     type: MovementType
 }
 
-export interface Bank {
+export type TMovementFilters = {
+    description?: string
+    startDate?: string
+    endDate?: string
+    operation?: string // Note: This will be checked against 'true' string in the code
+    minMoney?: string // Will be converted to Number
+    maxMoney?: string // Will be converted to Number
+    minQuantity?: string // Will be converted to Number
+    maxQuantity?: string // Will be converted to Number
+    type?: MovementType
+}
+
+export type TMarket = {
     _id: string
-    user: string
     name: string
-    balance: number
-    movements: Movement[]
+    user: string
+    shops: TShop[]
+}
+
+export type TShop = {
+    _id: string
+    product: string
+    quantity: number
+    price: number
+    date: Date
+}
+
+export type TIngredient = {
+    _id: string
+    name: string
+    calories: number
+    quantity: number
+    price: number
+}
+
+export type TStep = {
+    _id: string
+    description: string
+    order: number
+}
+
+export type TRecipe = {
+    _id: string
+    name: string
+    calories: number
+    user: string
+    ingredients: TIngredient[]
+    steps: TStep[]
+    createdAt: string
+    updatedAt: string
 }
