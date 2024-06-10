@@ -4,9 +4,10 @@
     "description": "Agenta",
     "main": "server.ts",
     "scripts": {
+        "setup-production-app": "pnpm i && cd client && pnpm i && pnpm run build",
         "server": "nodemon -r dotenv/config --exec ts-node server.ts",
-        "client": "cd client && npm start",
-        "dev": "concurrently --kill-others-on-fail \" npm run server\" \" npm run client\""
+        "client": "cd client && pnpm start",
+        "dev": "concurrently --kill-others-on-fail \" pnpm run server\" \" pnpm run client\""
     },
     "keywords": [
         "agenta",
