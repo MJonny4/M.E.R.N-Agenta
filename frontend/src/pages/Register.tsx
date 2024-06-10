@@ -8,7 +8,7 @@ import Header from '../components/Header'
 import { RootState } from '../redux/store'
 import { clearError, registerFailure, registerStart, registerSuccess } from '../redux/user/userSlice'
 import axiosInstance from '../utils/axios'
-import { ErrorResponse } from '../types/types'
+import { TErrorResponse } from '../types/types'
 
 export default function Register() {
     const [formData, setFormData] = useState({
@@ -46,7 +46,7 @@ export default function Register() {
         try {
             const { data, status } = await axiosInstance.post('/auth/register', formData)
 
-            if (status === 200) {
+            if (status === 201) {
                 dispatch(registerSuccess())
                 setSuccess('Account created successfully!')
                 setTimeout(() => {
@@ -62,10 +62,10 @@ export default function Register() {
                 }
             }
         } catch (err) {
-            let errorMessage: ErrorResponse['message']
+            let errorMessage: TErrorResponse['message']
 
             if (axios.isAxiosError(err) && err.response) {
-                const errorData = err.response.data as ErrorResponse
+                const errorData = err.response.data as TErrorResponse
 
                 if (typeof errorData.message === 'string') {
                     errorMessage = errorData.message

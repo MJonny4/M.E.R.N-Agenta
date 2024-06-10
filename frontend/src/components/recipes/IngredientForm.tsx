@@ -55,6 +55,7 @@ const IngredientForm: React.FC<IngredientFormProps> = ({ onSubmit, initialValues
                 <input
                     type='number'
                     id='price'
+                    step='0.01'
                     {...register('price', { required: true })}
                     className='border border-mocha-brown px-2 py-1 rounded'
                 />

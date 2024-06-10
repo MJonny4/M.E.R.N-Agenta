@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { FaEnvelope, FaLock, FaCoffee, FaUserPlus } from 'react-icons/fa'
 import { loginStart, loginSuccess, loginFailure, clearError } from '../redux/user/userSlice'
 import { RootState } from '../redux/store'
-import { ErrorResponse, SuccessResponse } from '../types/types'
+import { TErrorResponse, TSuccessResponse } from '../types/types'
 import Header from '../components/Header'
 import axiosInstance from '../utils/axios'
 import axios from 'axios'
@@ -36,7 +36,7 @@ export default function Login() {
         dispatch(loginStart())
 
         try {
-            const { data } = await axiosInstance.post<SuccessResponse>('/auth/login', formData)
+            const { data } = await axiosInstance.post<TSuccessResponse>('/auth/login', formData)
 
             if (!data.user || !data.token) {
                 dispatch(loginFailure('An unknown error occurred'))
@@ -46,10 +46,10 @@ export default function Login() {
             dispatch(loginSuccess(data.user))
             navigate('/dashboard')
         } catch (err) {
-            let errorMessage: ErrorResponse['message']
+            let errorMessage: TErrorResponse['message']
 
             if (axios.isAxiosError(err) && err.response) {
-                const errorData = err.response.data as ErrorResponse
+                const errorData = err.response.data as TErrorResponse
 
                 if (typeof errorData.message === 'string') {
                     errorMessage = errorData.message
