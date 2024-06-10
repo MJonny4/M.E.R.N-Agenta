@@ -23,7 +23,7 @@ const Home: FC = () => {
                     Manage Your Daily Agenda with Ease
                 </motion.h1>
                 <motion.img
-                    src='src/images/room.webp'
+                    src={'/room.webp'}
                     alt='A nice room with a view'
                     className='rounded-lg object-scale-down w-full h-auto md:w-3/4 mx-auto shadow-xl'
                     transition={{ type: 'spring', stiffness: 100 }}

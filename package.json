@@ -4,11 +4,8 @@
     "description": "Agenta",
     "main": "server.ts",
     "scripts": {
-        "setup-production-app": "pnpm i && cd client && pnpm i && pnpm run build",
-        "build": "pnpm setup-production-app",
-        "start": "nodemon -r dotenv/config --exec ts-node server.ts",
-        "client": "cd client && pnpm start",
-        "dev": "concurrently --kill-others-on-fail \" pnpm run server\" \" pnpm run client\""
+        "build": "pnpm i && cd client && pnpm i && pnpm run build",
+        "start": "ts-node -r dotenv/config server.ts"
     },
     "keywords": [
         "agenta",
@@ -27,8 +24,7 @@
         "express": "^4.19.2",
         "express-validator": "^7.1.0",
         "jsonwebtoken": "^9.0.2",
-        "mongoose": "^8.4.1",
-        "concurrently": "^8.2.2"
+        "mongoose": "^8.4.1"
     },
     "devDependencies": {
         "@types/bcrypt": "^5.0.2",

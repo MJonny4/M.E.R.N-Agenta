@@ -42,7 +42,7 @@ const About: FC = () => {
                         </div>
                         <div className='md:w-1/2 md:pl-12'>
                             <motion.img
-                                src='src/images/person_coffee.webp'
+                                src={'/person_coffee.webp'}
                                 alt='Person enjoying coffee while using Agenta app'
                                 className='rounded-lg shadow-xl'
                                 whileHover={{ scale: 1.02 }}

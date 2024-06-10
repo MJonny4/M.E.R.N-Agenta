@@ -9,6 +9,7 @@ import banksRouter from './routes/bank.routes'
 import marketRouter from './routes/market.routes'
 import recipesRouter from './routes/recipe.routes'
 import streaksRouter from './routes/streak.routes'
+import path from 'path'
 
 mongoose
     .connect(String(process.env.MONGO_URL), {
@@ -26,17 +27,19 @@ const startServer = async () => {
     const app = express()
     const PORT = process?.env?.PORT || 3000
 
-    app.use((req: Request, res: Response, next: NextFunction) => {
-        Logging.info(`[🔽] Incoming => [Method: ${req.method}] -- [URL: ${req.url}] -- [IP: ${req.ip} 🖥️ ]`)
-
-        res.on('finish', () => {
-            Logging.info(
-                `[🔼] Outgoing => [Method: ${req.method}] -- [URL: ${req.url}] -- [IP: ${req.socket.remoteAddress} 🖥️ ] -- [Status: ${res.statusCode}]\n`,
-            )
-        })
-
-        next()
+    // Serve the client
+    app.use((req, res, next) => {
+        if (/(.ico|.js|.css|.jpg|.png|.map|.webp)$/i.test(req.path)) {
+            next()
+        } else {
+            res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate')
+            res.header('Expires', '-1')
+            res.header('Pragma', 'no-cache')
+            res.sendFile(path.join(__dirname, 'client/dist', 'index.html'))
+        }
     })
+
+    app.use(express.static(path.join(__dirname, './client/dist')))
 
     // Configurations
     app.use(
@@ -61,12 +64,20 @@ const startServer = async () => {
         next()
     })
 
-    // Routes
-    app.get('/', (req: Request, res: Response) => {
-        if (req) console.log('Request received!')
-        res.send('Server is Working! 🚀')
+    // Informations
+    app.use((req: Request, res: Response, next: NextFunction) => {
+        Logging.info(`[🔽] Incoming => [Method: ${req.method}] -- [URL: ${req.url}] -- [IP: ${req.ip} 🖥️ ]`)
+
+        res.on('finish', () => {
+            Logging.info(
+                `[🔼] Outgoing => [Method: ${req.method}] -- [URL: ${req.url}] -- [IP: ${req.socket.remoteAddress} 🖥️ ] -- [Status: ${res.statusCode}]\n`,
+            )
+        })
+
+        next()
     })
 
+    // Routes
     app.use('/api/v1/auth', authRouter)
     app.use('/api/v1/banks', banksRouter)
     app.use('/api/v1/markets', marketRouter)
