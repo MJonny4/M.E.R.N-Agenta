@@ -27,20 +27,6 @@ const startServer = async () => {
     const app = express()
     const PORT = process?.env?.PORT || 3000
 
-    // Serve the client
-    app.use((req, res, next) => {
-        if (/(.ico|.js|.css|.jpg|.png|.map|.webp)$/i.test(req.path)) {
-            next()
-        } else {
-            res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate')
-            res.header('Expires', '-1')
-            res.header('Pragma', 'no-cache')
-            res.sendFile(path.join(__dirname, 'client/dist', 'index.html'))
-        }
-    })
-
-    app.use(express.static(path.join(__dirname, './client/dist')))
-
     // Configurations
     app.use(
         cors({
@@ -83,6 +69,20 @@ const startServer = async () => {
     app.use('/api/v1/markets', marketRouter)
     app.use('/api/v1/recipes', recipesRouter)
     app.use('/api/v1/streaks', streaksRouter)
+
+    // Serve the client
+    app.use((req, res, next) => {
+        if (/(.ico|.js|.css|.jpg|.png|.map|.webp)$/i.test(req.path)) {
+            next()
+        } else {
+            res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate')
+            res.header('Expires', '-1')
+            res.header('Pragma', 'no-cache')
+            res.sendFile(path.join(__dirname, 'client/dist', 'index.html'))
+        }
+    })
+
+    app.use(express.static(path.join(__dirname, './client/dist')))
 
     // Error handling
     app.use((req: Request, res: Response, next: NextFunction) => {

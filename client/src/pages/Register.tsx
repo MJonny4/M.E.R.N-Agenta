@@ -46,6 +46,8 @@ export default function Register() {
         try {
             const { data, status } = await axiosInstance.post('/auth/register', formData)
 
+            console.log(data)
+
             if (status === 201) {
                 dispatch(registerSuccess())
                 setSuccess('Account created successfully!')
